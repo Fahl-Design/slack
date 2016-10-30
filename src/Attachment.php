@@ -131,7 +131,6 @@ class Attachment
      * Instantiate a new Attachment.
      *
      * @param array $attributes
-     * @return void
      */
     public function __construct(array $attributes)
     {
@@ -529,7 +528,7 @@ class Attachment
     /**
      * Get the fields for the attachment.
      *
-     * @return array
+     * @return Attachment[]
      */
     public function getFields()
     {
@@ -540,14 +539,21 @@ class Attachment
      * Set the fields for the attachment.
      *
      * @param array $fields
+     *
      * @return $this
+     * @throws \InvalidArgumentException
      */
     public function setFields(array $fields)
     {
         $this->clearFields();
 
         foreach ($fields as $field) {
-            $this->addField($field);
+            try {
+                $this->addField($field);
+            } catch (\Exception $e) {
+                // on error go to next field
+                continue;
+            }
         }
 
         return $this;
@@ -557,7 +563,9 @@ class Attachment
      * Add a field to the attachment.
      *
      * @param mixed $field
+     *
      * @return $this
+     * @throws \InvalidArgumentException
      */
     public function addField($field)
     {

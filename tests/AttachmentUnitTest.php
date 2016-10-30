@@ -215,7 +215,7 @@ class AttachmentUnitTest extends PHPUnit_Framework_TestCase
 
         $actions = $a->getActions();
 
-        $this->assertSame(1, count($actions));
+        $this->assertCount(1, $actions);
 
         $this->assertSame('Text 1', $actions[0]->getText());
     }
@@ -245,7 +245,7 @@ class AttachmentUnitTest extends PHPUnit_Framework_TestCase
 
         $actions = $a->getActions();
 
-        $this->assertSame(1, count($actions));
+        $this->assertCount(1, $actions);
 
         $this->assertSame($ac, $actions[0]);
     }
@@ -265,7 +265,7 @@ class AttachmentUnitTest extends PHPUnit_Framework_TestCase
 
         $fields = $a->getFields();
 
-        $this->assertSame(1, count($fields));
+        $this->assertCount(1, $fields);
 
         $this->assertSame('Title 1', $fields[0]->getTitle());
     }
@@ -287,7 +287,7 @@ class AttachmentUnitTest extends PHPUnit_Framework_TestCase
 
         $fields = $a->getFields();
 
-        $this->assertSame(1, count($fields));
+        $this->assertCount(1, $fields);
 
         $this->assertSame($f, $fields[0]);
     }
@@ -309,10 +309,10 @@ class AttachmentUnitTest extends PHPUnit_Framework_TestCase
           'short' => true,
         ]);
 
-        $this->assertSame(2, count($a->getFields()));
+        $this->assertCount(2, $a->getFields());
 
         $a->setFields([]);
 
-        $this->assertSame(0, count($a->getFields()));
+        $this->assertCount(0, $a->getFields());
     }
 }

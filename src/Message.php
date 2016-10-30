@@ -45,7 +45,7 @@ class Message
     /**
      * The type of icon we are using.
      *
-     * @var enum
+     * @var string (enum)
      */
     protected $iconType;
 
@@ -86,7 +86,6 @@ class Message
      * Instantiate a new Message.
      *
      * @param \Maknz\Slack\Client $client
-     * @return void
      */
     public function __construct(Client $client)
     {
@@ -180,13 +179,13 @@ class Message
      */
     public function setIcon($icon)
     {
-        if ($icon == null) {
+        if ($icon === null) {
             $this->icon = $this->iconType = null;
 
-            return;
+            return $this;
         }
 
-        if (mb_substr($icon, 0, 1) == ':' && mb_substr($icon, mb_strlen($icon) - 1, 1) == ':') {
+        if (mb_substr($icon, 0, 1) === ':' && mb_substr($icon, mb_strlen($icon) - 1, 1) === ':') {
             $this->iconType = self::ICON_TYPE_EMOJI;
         } else {
             $this->iconType = self::ICON_TYPE_URL;
@@ -223,7 +222,8 @@ class Message
      * Slack's Markdown-like language.
      *
      * @param bool $value
-     * @return void
+     *
+     * @return Message
      */
     public function setAllowMarkdown($value)
     {
@@ -235,7 +235,7 @@ class Message
     /**
      * Enable Markdown formatting for the message.
      *
-     * @return void
+     * @return Message
      */
     public function enableMarkdown()
     {
@@ -247,7 +247,7 @@ class Message
     /**
      * Disable Markdown formatting for the message.
      *
-     * @return void
+     * @return Message
      */
     public function disableMarkdown()
     {
@@ -272,7 +272,8 @@ class Message
      * in Slack's Markdown-like language.
      *
      * @param array $fields
-     * @return void
+     *
+     * @return Message
      */
     public function setMarkdownInAttachments(array $fields)
     {
@@ -324,7 +325,9 @@ class Message
      * Add an attachment to the message.
      *
      * @param mixed $attachment
+     *
      * @return $this
+     * @throws \InvalidArgumentException
      */
     public function attach($attachment)
     {
@@ -350,7 +353,7 @@ class Message
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return Attachment[]
      */
     public function getAttachments()
     {
@@ -368,7 +371,11 @@ class Message
         $this->clearAttachments();
 
         foreach ($attachments as $attachment) {
-            $this->attach($attachment);
+            try {
+                $this->attach($attachment);
+            } catch (\Exception $e) {
+                continue;
+            }
         }
 
         return $this;
@@ -390,7 +397,9 @@ class Message
      * Send the message.
      *
      * @param string $text The text to send
-     * @return void
+     *
+     * @return Message
+     * @throws \RuntimeException
      */
     public function send($text = null)
     {

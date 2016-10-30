@@ -30,7 +30,6 @@ class AttachmentField
      * Instantiate a new AttachmentField.
      *
      * @param array $attributes
-     * @return void
      */
     public function __construct(array $attributes)
     {
